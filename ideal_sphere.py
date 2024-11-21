@@ -13,24 +13,42 @@ x2 = np.arange(0, np.pi + 0.01, angle)
 y2 = np.around(np.sin(x2) * n * 2, 0).astype(int)
 
 for i, num in enumerate(y2):
-    if (i == 0):
+    if num == 0:
         continue
-    if (i == 1):
+    if i == 1:
         print("Row 1: sc", num, "into magic ring")
         continue
     prev = y2[i - 1]
-    if (prev < num):
+    if prev < num:
         # increase
         d = num - prev
         avail = prev - d
-        if (d == 1):
-            print("Row", i, ': sc', int(avail / 3), ', inc, sc', avail - int(avail / 3))
+        even = i % 2 + 1
+        if d == 1:
+            print("Row", str(i) + ': sc', int(avail / 3) * even, ', inc, sc', avail - int(avail / 3) * even, end='')
         else:
             k = int(avail / d)
             r = avail % d
-            print('Row', str(i) + ': repeat', d, 'times [sc', k, ', inc]', '' if r > 0 else '\n', end='')
+            print('Row', str(i) + ': repeat', d, 'times [sc', k, ', inc]', end='')
             if r > 0:
-                print('sc', r)
+                print(', sc', r, end='')
+        print(' (', d * 2 + avail, ')', sep= '')
+    elif prev > num:
+        # decrease
+        d = prev - num
+        avail = prev - d * 2
+        even = i % 2 + 1
+        if d == 1:
+            print("Row", str(i) + ': sc', int(avail / 3) * even, ', dec, sc', avail - int(avail / 3) * even, end='')
+        else:
+            k = int(avail / d)
+            r = avail % d
+            print('Row', str(i) + ': repeat', d, 'times [sc', k, ', dec]', end='')
+            if r > 0:
+                print(', sc', r, end='')
+        print(' (', d + avail, ')', sep= '')
+    else:
+        print("Row ", i, ': sc around (', num, ')', sep='')
 
 
 print(y2)
